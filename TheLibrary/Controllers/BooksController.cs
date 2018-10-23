@@ -38,6 +38,7 @@ namespace FrontEnd.Controllers
         // GET: Books/Create
         public ActionResult Create()
         {
+            PopulateAuthorsDropDownList();
             return View();
         }
 
@@ -78,7 +79,7 @@ namespace FrontEnd.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Title,Author")] Book book)
+        public ActionResult Edit([Bind(Include = "ID,Title")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -113,6 +114,15 @@ namespace FrontEnd.Controllers
             db.Books.Remove(book);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        private void PopulateAuthorsDropDownList(object selectedDepartment = null)
+        {
+            var authorsQuery = (from d in db.Authors
+                                   orderby d.Name
+                                   select d);
+
+            ViewBag.Authors = new SelectList(authorsQuery, "ID", "Name", selectedDepartment);
         }
 
         protected override void Dispose(bool disposing)

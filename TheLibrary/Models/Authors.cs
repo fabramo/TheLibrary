@@ -1,6 +1,4 @@
-﻿using System.Data.Entity;
-
-namespace FrontEnd.Models
+﻿namespace FrontEnd.Models
 {
     public class Author
     {
