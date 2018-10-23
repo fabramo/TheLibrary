@@ -11,8 +11,4 @@ namespace FrontEnd.Models
         public bool IsAlive { get; set; }
     }
 
-    public class AuthorDBContext : DbContext
-    {
-        public DbSet<Author> Authors { get; set; }
-    }
 }

@@ -14,8 +14,4 @@ namespace FrontEnd.Models
         public string Author { get; set; }
     }
 
-    public class BookDBContext : DbContext
-    {
-        public DbSet<Book> Books { get; set; }
-    }
 }

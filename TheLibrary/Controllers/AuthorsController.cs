@@ -9,7 +9,7 @@ namespace FrontEnd.Controllers
 {
     public class AuthorsController : Controller
     {
-        private AuthorDBContext db = new AuthorDBContext();
+        private LibraryDBContext db = new LibraryDBContext();
 
         // GET: Authors
         public ActionResult Index()
