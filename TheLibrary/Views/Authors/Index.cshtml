@@ -1,0 +1,96 @@
+﻿@model IEnumerable<FrontEnd.Models.Author>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@functions{
+    public string ConvertGenderToString(string value)
+    {
+        if (value == "M")
+        {
+            return "Male";
+        }
+
+        if (value == "F")
+        {
+            return "Female";
+        }
+
+        return "?";
+    }
+
+    public string GetState(string value)
+    {
+
+        switch (value)
+        {
+            case "0": return "Suisse";
+            case "1": return "Italy";
+            case "2": return "France";
+            case "3": return "Germany";
+
+            default: return "???";
+        }
+    }
+
+    public string GetIsAlive(bool value)
+    {
+        if (value)
+        {
+            return "Yes";
+        }
+        else
+        {
+            return "No";
+        }
+    }
+}
+
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAlive)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @ConvertGenderToString(item.Gender)
+        </td>
+        <td>
+            @GetState(item.State)
+        </td>
+        <td>
+            @GetIsAlive(item.IsAlive)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+        </td>
+    </tr>
+    }
+
+</table>

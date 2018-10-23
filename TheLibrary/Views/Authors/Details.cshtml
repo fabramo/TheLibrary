@@ -1,0 +1,95 @@
+﻿@model FrontEnd.Models.Author
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@functions{
+    public string ConvertGenderToString()
+    {
+        var value = Model.Gender;
+        if (value == "M")
+        {
+            return "Male";
+        }
+
+        if (value == "F")
+        {
+            return "Female";
+        }
+
+        return "?";
+    }
+
+    public string GetState()
+    {
+
+        switch (Model.State)
+        {
+            case "0": return "Suisse";
+            case "1": return "Italy";
+            case "2": return "France";
+            case "3": return "Germany";
+
+            default: return "???";
+        }
+    }
+
+    public string GetIsAlive()
+    {
+        if (Model.IsAlive)
+        {
+            return "Yes";
+        }
+        else
+        {
+            return "No";
+        }
+
+    }
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Author</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @ConvertGenderToString()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+
+        <dd>
+            @GetState()
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAlive)
+        </dt>
+
+        <dd>
+            @GetIsAlive()
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
