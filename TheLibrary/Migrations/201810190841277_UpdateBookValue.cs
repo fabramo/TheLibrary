@@ -15,7 +15,8 @@ namespace FrontEnd.Migrations
         
         public override void Down()
         {
-            
+            AlterColumn($"{SCHEMA}.{TABLE_BOOKS}", "Title", c => c.String(nullable: true, maxLength: int.MaxValue));
+            AlterColumn($"{SCHEMA}.{TABLE_BOOKS}", "Author", c => c.String(nullable: true, maxLength: int.MaxValue));
         }
     }
 }
