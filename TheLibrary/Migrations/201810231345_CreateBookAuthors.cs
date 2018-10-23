@@ -6,7 +6,7 @@ namespace FrontEnd.Migrations
     {
         private const string SCHEMA = "dbo";
         private const string TABLE_BOOK_AUTHORS = "BookAuthors";
-        private const string TABLE_BOOK = "Books";
+        private const string TABLE_BOOKS = "Books";
         private const string TABLE_AUTHORS = "Authors";
 
         public override void Up()
@@ -19,15 +19,17 @@ namespace FrontEnd.Migrations
                      BookId = c.Int(nullable: false),
                      AuthorId = c.Int(nullable: false)
                  })
-                 .PrimaryKey(t => t.ID)
-                .ForeignKey($"{SCHEMA}.{TABLE_BOOK}", t => t.BookId)
+                .PrimaryKey(t => t.ID)
+                .ForeignKey($"{SCHEMA}.{TABLE_BOOKS}", t => t.BookId)
                 .ForeignKey($"{SCHEMA}.{TABLE_AUTHORS}", t => t.AuthorId);
+
+            AddForeignKey("dbo.BookAuthors", "AuthorId", "dbo.Authors", "Id");
         }
         
         public override void Down()
         {
-            DropForeignKey($"{SCHEMA}.{TABLE_BOOK_AUTHORS}", "BookId");
-            DropForeignKey($"{SCHEMA}.{TABLE_BOOK_AUTHORS}", "AuthorId");
+            DropForeignKey($"{SCHEMA}.{TABLE_BOOK_AUTHORS}", "BookId", $"{SCHEMA}.{TABLE_BOOKS}");
+            DropForeignKey($"{SCHEMA}.{TABLE_BOOK_AUTHORS}", "AuthorId", $"{SCHEMA}.{TABLE_AUTHORS}");
 
             DropTable($"{SCHEMA}.{TABLE_BOOK_AUTHORS}");
         }

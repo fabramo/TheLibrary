@@ -12,7 +12,7 @@ namespace FrontEnd.Migrations
 
         string IMigrationMetadata.Id
         {
-            get { return "201810231345277_CreateBookAuthors"; }
+            get { return "201810231345_CreateBookAuthors"; }
         }
 
         string IMigrationMetadata.Source

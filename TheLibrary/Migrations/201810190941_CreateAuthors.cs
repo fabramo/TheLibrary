@@ -16,7 +16,8 @@ namespace FrontEnd.Migrations
                         ID = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         Gender = c.String(),
-                        State = c.String()
+                        State = c.String(),
+                        IsAlive = c.Boolean()
                     })
                 .PrimaryKey(t => t.ID);
             

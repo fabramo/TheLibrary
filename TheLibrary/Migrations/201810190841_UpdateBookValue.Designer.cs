@@ -4,14 +4,13 @@ namespace FrontEnd.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    // [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
     public sealed partial class UpdateBookValue : IMigrationMetadata
     {
         private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateBookValue));
 
         string IMigrationMetadata.Id
         {
-            get { return "201810190841277_UpdateBookValue"; }
+            get { return "201810190841_UpdateBookValue"; }
         }
 
         string IMigrationMetadata.Source
