@@ -2,7 +2,7 @@
 {
     public class Author
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string Name { get; set; }
         public string Gender { get; set; }
         public string State { get; set; }

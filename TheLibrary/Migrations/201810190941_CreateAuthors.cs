@@ -13,7 +13,7 @@ namespace FrontEnd.Migrations
                $"{SCHEMA}.{TABLE_AUTHORS}",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        ID = c.String(nullable: false),
                         Name = c.String(),
                         Gender = c.String(),
                         State = c.String(),

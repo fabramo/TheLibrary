@@ -1,7 +1,20 @@
-﻿@model FrontEnd.Models.Book
+﻿@model FrontEnd.ViewModels.BookViewModel
 
 @{
     ViewBag.Title = "Details";
+}
+
+@functions{
+    public string GetAuthors(List<string>
+        authors)
+    {
+        var result = "";
+
+        authors.ForEach(a => result += $"{a}, ");
+
+        return result.Replace(", ", "");
+    }
+
 }
 
 <h2>Details</h2>
@@ -19,11 +32,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.Authors)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Author)
+            @GetAuthors(Model.Authors)
         </dd>
 
     </dl>

@@ -1,8 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FrontEnd.Models;
+using FrontEnd.ViewModels;
 
 namespace FrontEnd.Controllers
 {
@@ -13,33 +16,81 @@ namespace FrontEnd.Controllers
         // GET: Books
         public ActionResult Index()
         {
-            var books = from b in db.Books
-                         select b;
+            var bookViewModels = new List<BookViewModel>();
 
-            return View(books);
+            var books = (from b in db.Books
+                         join ab in db.BookAuthors on b.ID equals ab.BookId
+                         join a in db.Authors on ab.AuthorId equals a.ID
+                         select new
+                         {
+                             Id = b.ID,
+                             Title = b.Title,
+                             Author = a.Name
+                         }).ToList();
+
+            if (books != null)
+            {
+                books.ForEach(b =>
+                {
+                    var result = bookViewModels.FirstOrDefault(bvm => bvm.ID == b.Id);
+
+                    if (result != null)
+                    {
+                        result.Authors.Add(b.Author);
+                    }
+                    else
+                    {
+                        var x = new BookViewModel(b.Id, b.Title);
+                        x.Authors.Add(b.Author);
+
+                        bookViewModels.Add(x);
+                    }
+                });
+            }
+
+            return View(bookViewModels);
         }
 
         // GET: Books/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
-            if (id == null)
+            if (String.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = db.Books.Find(id);
-            if (book == null)
+
+            //the result is a list of item with the same ID and Title
+            var book = (from b in db.Books
+                        join ab in db.BookAuthors on b.ID equals ab.BookId
+                        join a in db.Authors on ab.AuthorId equals a.ID
+                        where b.ID.Equals(id)
+                        select new
+                        {
+                            Id = b.ID,
+                            Title = b.Title,
+                            Author = a.Name
+                        }).ToList();
+
+            BookViewModel bookViewModel;
+            if (book != null)
+            {
+                bookViewModel = new BookViewModel(book[0].Id, book[0].Title);
+
+                book.ForEach(b => bookViewModel.Authors.Add(b.Author));
+            }
+            else
             {
                 return HttpNotFound();
             }
 
-            return View(book);
+            return View(bookViewModel);
         }
 
         // GET: Books/Create
         public ActionResult Create()
         {
-            PopulateAuthorsDropDownList();
-            return View();
+            BookEditModel books = new BookEditModel() { Authors = PopulateAuthorsList() };
+            return View(books);
         }
 
         // POST: Books/Create
@@ -47,22 +98,25 @@ namespace FrontEnd.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Title,Author")] Book book)
+        public ActionResult Create([Bind(Include = "ID,Title,SelectedAuthors")] BookEditModel bookEditModel)
         {
             if (ModelState.IsValid)
             {
-                db.Books.Add(book);
+                string id = Guid.NewGuid().ToString();
+
+                db.Books.Add(MapBookEditModelToBook(id, bookEditModel));
+                db.BookAuthors.AddRange(MapBookEditModelToBookAuthors(id, bookEditModel));
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(book);
+            return View(bookEditModel);
         }
 
         // GET: Books/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
-            if (id == null)
+            if (String.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -91,9 +145,9 @@ namespace FrontEnd.Controllers
         }
 
         // GET: Books/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(string id)
         {
-            if (id == null)
+            if (String.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -108,7 +162,7 @@ namespace FrontEnd.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(string id)
         {
             Book book = db.Books.Find(id);
             db.Books.Remove(book);
@@ -116,13 +170,31 @@ namespace FrontEnd.Controllers
             return RedirectToAction("Index");
         }
 
-        private void PopulateAuthorsDropDownList(object selectedDepartment = null)
+        private List<SelectListItem> PopulateAuthorsList()
         {
-            var authorsQuery = (from d in db.Authors
-                                   orderby d.Name
-                                   select d);
+            return (from d in db.Authors
+                    orderby d.Name
+                    select new SelectListItem()
+                    {
+                        Text = d.Name,
+                        Value = d.ID
+                    }).ToList();
+        }
 
-            ViewBag.Authors = new SelectList(authorsQuery, "ID", "Name", selectedDepartment);
+        private Book MapBookEditModelToBook(string id, BookEditModel model)
+        {
+            return new Book() { ID = id, Title = model.Title };
+        }
+
+        private IEnumerable<BookAuthors> MapBookEditModelToBookAuthors(string id, BookEditModel model)
+        {
+            var result = model.SelectedAuthors.Select(a =>
+            {
+                return new BookAuthors() { ID = Guid.NewGuid().ToString(), BookId = id, AuthorId = a };
+            }
+            );
+
+            return result;
         }
 
         protected override void Dispose(bool disposing)

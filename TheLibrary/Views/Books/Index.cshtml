@@ -1,7 +1,20 @@
-﻿@model IEnumerable<FrontEnd.Models.Book>
+﻿@model IEnumerable<FrontEnd.ViewModels.BookViewModel>
 
 @{
     ViewBag.Title = "Index";
+}
+
+@functions{
+    public string GetAuthors(List<string>
+        authors)
+    {
+        var result = "";
+
+        authors.ForEach(a => result += $"{a}, ");
+
+        return result.Replace(", ", "");
+    }
+
 }
 
 <h2>Index</h2>
@@ -11,26 +24,31 @@
     @Html.ActionLink("Create New", "Create")
 
 </p>
-    <table class="table">
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Authors)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th></th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @GetAuthors(item.Authors)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
         </tr>
+    }
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                </td>
-            </tr>
-        }
-
-    </table>
+</table>

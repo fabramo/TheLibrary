@@ -15,9 +15,9 @@ namespace FrontEnd.Migrations
                 $"{SCHEMA}.{TABLE_BOOK_AUTHORS}",
                  c => new
                  {
-                     ID = c.Int(nullable: false, identity: true),
-                     BookId = c.Int(nullable: false),
-                     AuthorId = c.Int(nullable: false)
+                     ID = c.String(nullable: false),
+                     BookId = c.String(nullable: false),
+                     AuthorId = c.String(nullable: false)
                  })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey($"{SCHEMA}.{TABLE_BOOKS}", t => t.BookId)

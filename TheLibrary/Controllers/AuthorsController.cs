@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -18,18 +19,19 @@ namespace FrontEnd.Controllers
         }
 
         // GET: Authors/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Author author = db.Authors.Find(id);
             if (author == null)
             {
                 return HttpNotFound();
             }
-           
+
             return View(author);
         }
 
@@ -38,7 +40,7 @@ namespace FrontEnd.Controllers
         {
             var states = GetStates();
 
-            var model = new AuthorEditModels
+            var model = new AuthorEditModel
             {
                 States = states
             };
@@ -55,6 +57,8 @@ namespace FrontEnd.Controllers
         {
             if (ModelState.IsValid)
             {
+                author.ID = Guid.NewGuid().ToString();
+
                 db.Authors.Add(author);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -64,9 +68,9 @@ namespace FrontEnd.Controllers
         }
 
         // GET: Authors/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -99,9 +103,9 @@ namespace FrontEnd.Controllers
         }
 
         // GET: Authors/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -116,7 +120,7 @@ namespace FrontEnd.Controllers
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(string id)
         {
             Author author = db.Authors.Find(id);
             db.Authors.Remove(author);
@@ -141,9 +145,9 @@ namespace FrontEnd.Controllers
         }
 
 
-        private AuthorEditModels MapAuthorToAuthorEditViewModel(Author author)
+        private AuthorEditModel MapAuthorToAuthorEditViewModel(Author author)
         {
-            var models = new AuthorEditModels();
+            var models = new AuthorEditModel();
 
             models.Name = author.Name;
             models.ID = author.ID;

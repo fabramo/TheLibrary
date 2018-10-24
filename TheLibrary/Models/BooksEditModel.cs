@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace FrontEnd.Models
 {
-    public class Book
+    public class BookEditModel
     {
         public string ID { get; set; }
 
@@ -11,7 +12,8 @@ namespace FrontEnd.Models
         [StringLength(10, MinimumLength = 5, ErrorMessage = "5 < length < 10")]
         public string Title { get; set; }
 
-        public ICollection<string> Authors { get; } = new List<string>();
+        public string[] SelectedAuthors { get; set; }
+        public IEnumerable<SelectListItem> Authors { get; set; }
     }
 
 }
