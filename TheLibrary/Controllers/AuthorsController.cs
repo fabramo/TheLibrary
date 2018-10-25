@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using FrontEnd.Models;
+using PagedList;
 
 namespace FrontEnd.Controllers
 {
@@ -13,11 +14,11 @@ namespace FrontEnd.Controllers
         private LibraryDBContext db = new LibraryDBContext();
 
         // GET: Authors
-        public ActionResult Index(string sortName, string searchName)
+        public ActionResult Index(string sortName, string searchName, int? page)
         {
             if (String.IsNullOrEmpty(sortName))
             {
-                ViewBag.SortName = "";
+                ViewBag.SortName = "ASC";
             }
             else if (sortName == "ASC")
             {
@@ -45,8 +46,15 @@ namespace FrontEnd.Controllers
             {
                 authors = authors.OrderByDescending(a => a.Name);
             }
+            else
+            {
+                authors = authors.OrderBy(a => a.ID);
+            }
 
-            return View(authors.ToList());
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+
+            return View(authors.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Authors/Details/5

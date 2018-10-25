@@ -1,4 +1,6 @@
-﻿@model IEnumerable<FrontEnd.Models.Author>
+﻿@model PagedList.IPagedList<FrontEnd.Models.Author>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -46,13 +48,13 @@
             @Html.ActionLink("Name", "Index", new { sortName = @GetTypeOfOrderName(), searchName = ViewBag.SearchName })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Gender)
+            Gender
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.State)
+            State
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsAlive)
+            IsAlive
         </th>
         <th></th>
     </tr>
@@ -81,3 +83,8 @@
     }
 
 </table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, searchName = ViewBag.SearchName }))
