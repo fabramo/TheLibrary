@@ -13,9 +13,34 @@ namespace FrontEnd.Controllers
         private LibraryDBContext db = new LibraryDBContext();
 
         // GET: Authors
-        public ActionResult Index()
+        public ActionResult Index(string sortName)
         {
-            return View(db.Authors.ToList());
+            if (String.IsNullOrEmpty(sortName))
+            {
+                ViewBag.SortName = "";
+            }
+            else if (sortName == "ASC")
+            {
+                ViewBag.SortName = "ASC";
+            }
+            else if (sortName == "DESC")
+            {
+                ViewBag.SortName = "DESC";
+            }
+
+            var authors = from s in db.Authors
+                          select s;
+
+            if (sortName == "ASC")
+            {
+                authors = authors.OrderBy(a => a.Name);
+            }
+            else if (sortName == "DESC")
+            {
+                authors = authors.OrderByDescending(a => a.Name);
+            }
+
+            return View(authors.ToList());
         }
 
         // GET: Authors/Details/5

@@ -4,6 +4,28 @@
     ViewBag.Title = "Index";
 }
 
+@functions {
+    public string GetTypeOfOrderName()
+    {
+        if (String.IsNullOrEmpty(ViewBag.SortName))
+        {
+            return "ASC";
+        }
+
+        if (ViewBag.SortName == "DESC")
+        {
+            return "ASC";
+        }
+
+        if (ViewBag.SortName == "ASC")
+        {
+            return "DESC";
+        }
+
+        return "";
+    }
+}
+
 <h2>Index</h2>
 
 <p>
@@ -12,7 +34,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("Name", "Index", new { sortName = @GetTypeOfOrderName() })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Gender)
@@ -28,25 +50,25 @@
 
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @GenericFunction.ConvertGenderToString(item.Gender)
-        </td>
-        <td>
-            @GenericFunction.GetState(item.State)
-        </td>
-        <td>
-            @GenericFunction.GetIsAlive(item.IsAlive)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-        </td>
-    </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @GenericFunction.ConvertGenderToString(item.Gender)
+            </td>
+            <td>
+                @GenericFunction.GetState(item.State)
+            </td>
+            <td>
+                @GenericFunction.GetIsAlive(item.IsAlive)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
     }
 
 </table>
