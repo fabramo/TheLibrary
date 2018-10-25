@@ -13,7 +13,7 @@ namespace FrontEnd.Controllers
         private LibraryDBContext db = new LibraryDBContext();
 
         // GET: Authors
-        public ActionResult Index(string sortName)
+        public ActionResult Index(string sortName, string searchName)
         {
             if (String.IsNullOrEmpty(sortName))
             {
@@ -30,6 +30,12 @@ namespace FrontEnd.Controllers
 
             var authors = from s in db.Authors
                           select s;
+
+            if (!String.IsNullOrEmpty(searchName))
+            {
+                ViewBag.SearchName = searchName;
+                authors = authors.Where(s => s.Name.Contains(searchName));
+            }
 
             if (sortName == "ASC")
             {
