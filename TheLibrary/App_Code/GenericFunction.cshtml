@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+
+@helper ConvertListToString(List<string> authors)
+{
+    var result = "";
+
+    authors.ForEach(a => result += $"{a}, ");
+    
+    @result.Remove(result.Length - 2);
+}
+
+@helper ConvertGenderToString(string value)
+{
+    if (value == "M")
+    {
+        @: Male
+    }
+    else if (value == "F")
+    {
+        @: Female
+    }
+    else
+    {
+        @: ?
+    }
+}
+
+@helper GetState(string value)
+{
+    switch (value)
+    {
+        case "0":
+            {
+                @: Suisse
+                break;
+            }
+
+        case "1":
+            {
+                @: Italy
+                break;
+            }
+
+        case "2":
+            {
+                @: France
+                break;
+            }
+
+        case "3":
+            {
+                @: Germany
+                break;
+            }
+
+        default:
+            {
+                @: ???
+                break;
+            }
+    }
+
+}
+
+@helper GetIsAlive(bool value)
+{
+    if (value)
+    {
+        @: Yes
+    }
+    else
+    {
+        @: No
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+
+    </div>
+</body>
+</html>

@@ -4,19 +4,6 @@
     ViewBag.Title = "Details";
 }
 
-@functions{
-    public string GetAuthors(List<string>
-        authors)
-    {
-        var result = "";
-
-        authors.ForEach(a => result += $"{a}, ");
-
-        return result.Replace(", ", "");
-    }
-
-}
-
 <h2>Details</h2>
 
 <div>
@@ -36,7 +23,7 @@
         </dt>
 
         <dd>
-            @GetAuthors(Model.Authors)
+            @GenericFunction.ConvertListToString(Model.Authors)
         </dd>
 
     </dl>

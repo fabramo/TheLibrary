@@ -4,19 +4,6 @@
     ViewBag.Title = "Index";
 }
 
-@functions{
-    public string GetAuthors(List<string>
-        authors)
-    {
-        var result = "";
-
-        authors.ForEach(a => result += $"{a}, ");
-
-        return result.Replace(", ", "");
-    }
-
-}
-
 <h2>Index</h2>
 
 <p>
@@ -41,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @GetAuthors(item.Authors)
+                @GenericFunction.ConvertListToString(item.Authors)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
