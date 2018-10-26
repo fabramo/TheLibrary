@@ -160,9 +160,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201810260855_CreateUsers.cs" />
+    <Compile Include="Migrations\201810260855_CreateUsers.Designer.cs">
+      <DependentUpon>201810260855_CreateUsers.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201810231345_CreateBookAuthors.cs" />
     <Compile Include="Migrations\201810231345_CreateBookAuthors.Designer.cs">
@@ -181,6 +186,8 @@
       <DependentUpon>201810190741_CreateBooks.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\UserRegistration.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\BooksEditModel.cs" />
     <Compile Include="Models\AuthorEditModel.cs" />
     <Compile Include="Models\Authors.cs" />
@@ -229,8 +236,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Books\Create.cshtml" />
     <Content Include="Views\Books\Delete.cshtml" />
@@ -242,6 +247,8 @@
     <Content Include="Views\Authors\Details.cshtml" />
     <Content Include="Views\Authors\Edit.cshtml" />
     <Content Include="Views\Authors\Index.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Registration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -260,6 +267,9 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201810260855_CreateUsers.resx">
+      <DependentUpon>201810260855_CreateUsers.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810231345_CreateBookAuthors.resx">
       <DependentUpon>201810231345_CreateBookAuthors.cs</DependentUpon>
     </EmbeddedResource>
